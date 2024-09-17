@@ -1,15 +1,27 @@
-<app-header></app-header>
+<app-header class="app-header">
+  <ng-container *ngIf="!isLoggedIn">
+    <p>{{userName}}</p>
+    <app-button [buttonText]="buttonLogout"  (click)="toggleLogin()"></app-button>
+  </ng-container>
+  <app-button [buttonText]="buttonLogin" (click)="toggleLogin()" *ngIf="isLoggedIn"></app-button>
+</app-header>
 <div class="app-root">
   <!-- Search component -->
   <!--<app-search></app-search>-->
 
   <!-- Info component -->
-  <!--<app-info></app-info>-->
+  <app-info 
+  [title]="infoTitle" 
+  [text]="infoCurrentText">
+    <app-button 
+    [buttonText]="buttonInfo">
+  </app-button>
+  </app-info>
 
   <!-- Course Card component -->
-  <!--<app-course-card></app-course-card>-->
 
-  <!-- Login Form component -->
+   <app-courses></app-courses>
+  <!--Login Form component -->
   <!--<app-login-form></app-login-form>-->
 
   <!-- Login Form component -->

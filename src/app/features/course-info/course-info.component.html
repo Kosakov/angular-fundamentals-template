@@ -1,17 +1,18 @@
 <!-- Replace ::text:: with your code -->
-
-<div class="title">::Title::</div>
+<ng-container *ngIf="course">
+<div class="title">{{course.title}}</div>
 <div class="course-info">
   <div class="course-info__description">
-    ::Description::
+    {{course.description}}
   </div>
   <div class="course-info__info">
-    <div><b>ID: </b><span class="course-info__info-id">::id::</span></div>
-    <div><b>Duration: </b><span class="course-info__info-duration">::duration::</span></div>
-    <div><b>Created: </b><span class="course-info__info-date">::date::</span></div>
-    <div><b>Authors: </b><span class="course-info__info-authors">::authors::</span></div>
+    <div><b>ID: </b><span class="course-info__info-id">{{course.id}}</span></div>
+    <div><b>Duration: </b><span class="course-info__info-duration">{{course.durationFormated}}</span></div>
+    <div><b>Created: </b><span class="course-info__info-date">{{course.formatedDate}}</span></div>
+    <div><b>Authors: </b><span class="course-info__info-authors">{{course.authorsNames}}</span></div>
   </div>
 </div>
 <div class="navigation-block">
-  <!--Enter your code here-->
+  <app-button [buttonText]="backButton" (click)="handleBAck(true)"></app-button>
 </div>
+<ng-container>

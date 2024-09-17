@@ -1,4 +1,4 @@
-<div class="app-button">
-  <!-- Replace the text below with your code -->
-  Button
+<div class="app-button" [ngStyle]="icon ? {'background-color': 'transparent'} : {}">
+  <fa-icon *ngIf="icon" [icon]="['fas', icon]" class="app-button__single-icon"></fa-icon>
+  <span *ngIf="buttonText">{{ buttonText }}</span>
 </div>

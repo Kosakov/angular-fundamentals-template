@@ -1,0 +1,11 @@
+
+<app-courses-list
+*ngIf="clickedBack"
+[courses]="courses"
+[editable]="editable"
+(showCourse)="handleShowCourse($event)"
+(editCourse)="handleEditCourse($event)"
+(deleteCourse)="handleDeleteCourse($event)"
+></app-courses-list>
+
+<app-course-info [course]="selectedCourse" *ngIf="!clickedBack" (backButtonPressed)="handleBack(true)"></app-course-info>

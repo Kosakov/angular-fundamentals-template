@@ -10,12 +10,30 @@
     color: #fff;
     text-transform: uppercase;
     cursor: pointer;
+    border:1.5px solid transparent;
+    
 
     &:hover {
         background: #016486;
     }
 
-    &__single-icon {
-        padding: 13px;
+    &:active {
+        border-color: #44c08a;
     }
+
+    &__single-icon {
+        color: #007298;
+        font-size: 2em;
+        
+        border-bottom:3px solid transparent
+        
+    }
+
+    &__single-icon:hover {
+        border-bottom:3px solid #016486  
+    }
+
+
 }
+
+

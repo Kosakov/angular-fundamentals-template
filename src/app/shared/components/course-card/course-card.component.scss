@@ -27,8 +27,21 @@
     justify-content: space-between;
     margin-left: 50px;
 
+    
+
     &-text {
       margin-top: 16px;
     }
+
+    &-actions{
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+      gap:5px;
+      align-items: center
+    }
+
+
   }
 }
+
