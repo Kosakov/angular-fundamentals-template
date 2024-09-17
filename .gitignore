@@ -5,7 +5,6 @@
 /.pnp
 .pnp.js
 .angular/cache/
-
 # testing
 /coverage
 
