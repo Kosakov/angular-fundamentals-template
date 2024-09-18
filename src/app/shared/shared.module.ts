@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalComponent } from './components/modal/modal.component';
+
 import {
   HeaderComponent,
   ButtonComponent,
@@ -15,6 +16,7 @@ import {
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { DurationPipe } from './pipes/duration.pipe';
 import { CustomDatePipe } from './pipes/custom-date.pipe';
+import {AuthorPipe} from '@shared/pipes/authorNames.pipe'
 import { EmailValidatorDirective } from '@shared/directives/email.directive';
 
 const components = [
@@ -29,7 +31,8 @@ const components = [
   CourseFormComponent,
   DurationPipe,
   CustomDatePipe,
-  EmailValidatorDirective
+  EmailValidatorDirective,
+  AuthorPipe
 ];
 
 @NgModule({
@@ -38,7 +41,7 @@ const components = [
     CommonModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   exports: [components]
 })

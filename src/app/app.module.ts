@@ -16,7 +16,8 @@ import { CoursesListComponent } from './features/courses/courses-list/courses-li
   imports: [
     BrowserModule,
     SharedModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    
   ],
   providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService],
   bootstrap: [AppComponent],

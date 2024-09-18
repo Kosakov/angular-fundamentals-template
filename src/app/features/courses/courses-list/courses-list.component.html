@@ -2,9 +2,9 @@
     <app-course-card  
     [title]="course.title" 
     [description]="course.description" 
-    [authorsNames]="course.authorsNames" 
-    [creationDate]="course.formatedDate" 
-    [durationFormated]="course.durationFormated" 
+    [authors]="course.authors" 
+    [creationDate]="course.creationDate" 
+    [duration]="course.duration" 
     [editable]="editable"
     (clickOnShow)="handleShow(course)">
       <ng-container >

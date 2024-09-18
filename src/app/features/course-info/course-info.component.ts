@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Course } from '@shared/components/course-card/interfaces';
- 
+import { Course } from '@app/features/courses/interfaces';
+ import {mockedCoursesList,mockedAuthorsList} from '@shared/mocks/mock'
+
 
 @Component({
   selector: 'app-course-info',
@@ -17,6 +18,9 @@ export class CourseInfoComponent {
   handleBAck(isClicked: boolean) {
     this.backButtonPressed.emit(isClicked);
   }
+
+
+
   
 }
 

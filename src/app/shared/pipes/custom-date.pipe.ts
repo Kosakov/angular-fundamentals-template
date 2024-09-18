@@ -4,5 +4,11 @@ import { Pipe } from '@angular/core';
     name: 'customDate'
 })
 export class CustomDatePipe {
-    // Add your code here
+    transform(value:any){
+    let tempDate= new Date(value)
+    let year=tempDate.getFullYear()
+    let day=tempDate.getDate()<10?"0"+tempDate.getDate():tempDate.getDate()
+    let month=tempDate.getMonth()+1<10?"0"+(tempDate.getMonth()+1):tempDate.getMonth()+1
+    return `${month}.${day}.${year}` 
+    }
 }

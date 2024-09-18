@@ -5,7 +5,4 @@ export interface Course {
     creationDate: string;
     duration: number;
     authors: string[];
-    authorsNames?: string[];
-    durationFormated?:string
-    formatedDate?:string
   }

@@ -1,5 +1,5 @@
 import { Component,OnInit,Output,Input,EventEmitter} from '@angular/core';
-import { Course } from '@shared/components/course-card/interfaces';
+import { Course } from '@app/features/courses/interfaces';
 import { faTrashCan, faPen } from '@fortawesome/free-solid-svg-icons';
  
 

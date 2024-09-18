@@ -9,8 +9,8 @@ export class CourseCardComponent{
 
   @Input() title!:string
   @Input() description!:string
-  @Input() authorsNames?:string[]
-  @Input() durationFormated?:string
+  @Input() authors!:string[]
+  @Input() duration?:number
   @Input() creationDate?:string
   @Output() clickOnShow=new EventEmitter<MouseEvent>()
   buttonText="Show Course"
