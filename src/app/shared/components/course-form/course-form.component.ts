@@ -23,7 +23,7 @@ export class CourseFormComponent  implements OnInit{
   invalidAuthorName:boolean=false
   
   ngOnInit(){
-    this.courseForm = this.fb.group(
+    this.courseForm = new FormGroup(
       {
         'title': new FormControl(null,[Validators.required,Validators.minLength(2)]),
         'description': new FormControl(null,[Validators.required,Validators.minLength(2)]),

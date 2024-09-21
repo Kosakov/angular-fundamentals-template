@@ -32,7 +32,7 @@
           <!--Use the name `author` for the form control.-->
           <input type="text" id="author" placeholder="Input Author Name"
           formControlName="author"/>
-          <app-button id="createAuthor" buttonText="Create Author" (click)="addAuthor()"></app-button>
+          <app-button id="createAuthor" buttonText="Create Author" (click)="addAuthor()" type="button"></app-button>
         </div>
         <span id="authorErrorMessage" *ngIf="courseForm.controls['author'].touched && courseForm.controls['author'].invalid && !courseForm.controls['author'].value">New author should contain only latin letters and numbers.</span>
         <div class="course__authors" 
