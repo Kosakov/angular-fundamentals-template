@@ -42,7 +42,7 @@ export class CoursesComponent{
 
   handleSearch(event: string): void {
     this.searched = event;
-    console.log(this.searched);
+    //console.log(this.searched);
   }
 
 
