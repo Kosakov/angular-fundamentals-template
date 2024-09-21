@@ -29,7 +29,7 @@ textarea {
   font-family: "Open Sans", sans-serif;
 }
 
-input:invalid,
+input:invalid.ng-touched,
 textarea:invalid {
   border-color: $color-red;
 }

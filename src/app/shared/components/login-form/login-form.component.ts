@@ -11,9 +11,6 @@ export class LoginFormComponent{
   @ViewChild("loginForm") public loginForm!: NgForm;
   showEmailErrorText=false
   showPassErrorText=false
-
- 
-
   onSubmit(){
     console.log(this.loginForm.controls)
     console.log(this.loginForm.controls['email']?.touched)

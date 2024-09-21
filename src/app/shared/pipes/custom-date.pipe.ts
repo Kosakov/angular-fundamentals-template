@@ -9,6 +9,6 @@ export class CustomDatePipe {
     let year=tempDate.getFullYear()
     let day=tempDate.getDate()<10?"0"+tempDate.getDate():tempDate.getDate()
     let month=tempDate.getMonth()+1<10?"0"+(tempDate.getMonth()+1):tempDate.getMonth()+1
-    return `${month}.${day}.${year}` 
+    return `${day}.${month}.${year}` 
     }
 }

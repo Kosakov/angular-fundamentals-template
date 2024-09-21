@@ -35,3 +35,23 @@
     cursor: pointer;
   }
 }
+
+.authors_single-icon{
+  margin-left: 0.2em;
+  background-color: inherit;
+  border: none;
+  cursor:pointer;
+  border-radius: 2px;
+}
+
+.authors_single-icon:hover{
+  border-radius: 0px;
+  border-bottom:1px solid black;
+}
+
+.authors_single-icon:active{
+  border-radius: 5px;
+  background-color: gray;
+}
+
+

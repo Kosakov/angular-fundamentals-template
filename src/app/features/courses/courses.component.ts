@@ -13,8 +13,7 @@ export class CoursesComponent{
   courses:Course[]=mockedCoursesList
   selectedCourse: any;
   clickedBack:boolean=true;
-  
-
+  searched: any;
 
   editable = true; 
 
@@ -39,6 +38,11 @@ export class CoursesComponent{
     this.clickedBack=isclicked
     //console.log(isclicked)
     
+  }
+
+  handleSearch(event: string): void {
+    this.searched = event;
+    console.log(this.searched);
   }
 
 

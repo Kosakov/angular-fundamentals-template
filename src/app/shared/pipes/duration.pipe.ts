@@ -7,7 +7,8 @@ export class DurationPipe {
     transform(minutes: number | undefined): string {
         
         if (minutes){
-            
+            if (minutes>0)
+            {
             let hours:string|number = Math.floor(minutes / 60);
             let mins:string|number = minutes % 60;
             let text = hours < 2 ? "hour" : "hours";
@@ -19,6 +20,8 @@ export class DurationPipe {
                 mins="0"+mins.toString()
             }
             return `${hours}:${mins} ${text}`;
+        }
+             return `No duration added`
         }
         return `No duration added`
       }

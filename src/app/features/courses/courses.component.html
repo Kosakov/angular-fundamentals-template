@@ -1,4 +1,7 @@
-
+<br/><br/><br/>
+<app-search 
+[placeholder]="'Search for a course...'" (search)="handleSearch($event)"></app-search>
+<br/><br/><br/>
 <app-courses-list
 *ngIf="clickedBack"
 [courses]="courses"
