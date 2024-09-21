@@ -5,12 +5,22 @@ import { Pipe } from "@angular/core";
 })
 export class DurationPipe {
     transform(minutes: number | undefined): string {
+        
         if (minutes){
-            const hours = Math.floor(minutes / 60);
-            const mins = minutes % 60;
-            return `${hours}:${mins} hours`;
+            
+            let hours:string|number = Math.floor(minutes / 60);
+            let mins:string|number = minutes % 60;
+            let text = hours < 2 ? "hour" : "hours";
+            if(hours<10){
+                hours="0"+hours.toString()
+                
+            }
+            if(mins<10){
+                mins="0"+mins.toString()
+            }
+            return `${hours}:${mins} ${text}`;
         }
-        return "No duration added"
+        return `No duration added`
       }
     
 }
