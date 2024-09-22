@@ -22,47 +22,68 @@ export class CourseFormComponent  implements OnInit{
   invalidDuration:boolean=false
   invalidAuthorName:boolean=false
   
-  ngOnInit(){
-    this.courseForm = this.fb.group(
-      {
-        'title': new FormControl("",[Validators.required,Validators.minLength(2)]),
-        'description': new FormControl("",[Validators.required,Validators.minLength(2)]),
-        'author': new FormControl("",[Validators.minLength(2),Validators.pattern(this.authorRegex)]),
-        'authors':this.fb.array([]),
-        'duration':new FormControl(0,[Validators.required,Validators.min(0)]),
-      }
-
-    )
-
+  ngOnInit() {
+    this.courseForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(2)]],
+      description: ['', [Validators.required, Validators.minLength(2)]],
+      author: this.fb.group({
+        name: ['', [Validators.minLength(2), Validators.pattern(this.authorRegex)]]
+      }),
+      authors: this.fb.array([]),
+      courseAuthors: this.fb.array([]),
+      duration: [0, [Validators.required, Validators.min(0)]],
+    });
   }
-  
 
-  onSubmit(){
-    //console.log(this.courseForm)
+  onSubmit() {
+    console.log(this.courseForm.value);
     
-    this.invalidTitle=this.courseForm.controls['title'].errors?.['required'] || this.courseForm.controls['title'].errors?.['minlength']?true:false
-    this.invalidDescription=this.courseForm.controls['description'].errors?.['required'] || this.courseForm.controls['description'].errors?.['minlength']?true:false
-    this.invalidDuration=this.courseForm.controls['duration'].errors?.['required'] || this.courseForm.controls['duration'].errors?.['min']?true:false
-    this.invalidAuthorName=this.courseForm.controls['author'].errors?.['pattern']?true:false
-    //console.log(this.invalidAuthorName)
+    this.invalidTitle = this.courseForm.get('title')?.errors?.['required'] || this.courseForm.get('title')?.errors?.['minlength'];
+    this.invalidDescription = this.courseForm.get('description')?.errors?.['required'] || this.courseForm.get('description')?.errors?.['minlength'];
+    this.invalidDuration = this.courseForm.get('duration')?.errors?.['required'] || this.courseForm.get('duration')?.errors?.['min'];
+    this.invalidAuthorName = this.courseForm.get('author')?.get('name')?.errors?.['pattern'] ? true : false;
   }
 
-  getAuthors() {
-    return this.courseForm.get("authors") as FormArray;
-    }
-
-  addAuthor() {
-    if (!this.courseForm.controls['author'].errors?.['pattern']){
-    this.getAuthors().push(new FormControl(this.courseForm.controls['author'].value, [Validators.minLength(2)]));
-    this.courseForm.controls['author'].reset();
-    this.invalidAuthorName=false
-    }
-    this.invalidAuthorName=true
-    return
+  getAuthors(): FormArray {
+    return this.courseForm.get('authors') as FormArray;
   }
+
+  getCourseAuthors(): FormArray {
+    return this.courseForm.get('courseAuthors') as FormArray;
+  }
+
+  createAuthor() {
+    const authorGroup = this.courseForm.get('author') as FormGroup;
   
+    if (authorGroup.get('name')?.valid) {
+      this.getAuthors().push(authorGroup);
+      this.courseForm.setControl('author', this.fb.group({
+        name: ['', [Validators.minLength(2), Validators.pattern(this.authorRegex)]]
+      }));
+      this.invalidAuthorName = false;
+    } else {
+      this.invalidAuthorName = true;
+    }
+  }
+
+  createCourseAuthor(index: number) {
+    const tempAuthor = this.getAuthors().at(index).value;
+    this.getCourseAuthors().push(this.fb.control(tempAuthor.name, [
+      Validators.minLength(2),
+      Validators.pattern(this.authorRegex)
+    ]));
+    this.getAuthors().removeAt(index);
+  }
+
   removeAuthor(index: number) {
     this.getAuthors().removeAt(index);
   }
 
+  moveCourseAuthor(index: number) {
+    const tempAuthor = this.getCourseAuthors().at(index).value;
+    this.getCourseAuthors().removeAt(index);
+    this.getAuthors().push(this.fb.group({
+      name: [tempAuthor, [Validators.minLength(2), Validators.pattern(this.authorRegex)]]
+    }));
+  }
 }
