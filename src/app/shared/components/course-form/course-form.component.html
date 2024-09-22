@@ -34,10 +34,10 @@
           formControlName="author"/>
           <app-button id="createAuthor" buttonText="Create Author" (click)="addAuthor()" type="button"></app-button>
         </div>
-        <span id="authorErrorMessage" *ngIf="courseForm.controls['author'].touched && courseForm.controls['author'].invalid && !courseForm.controls['author'].value">New author should contain only latin letters and numbers.</span>
+        <span id="authorErrorMessage" *ngIf=" invalidAuthorName || (courseForm.controls['author'].touched && courseForm.controls['author'].invalid && !courseForm.controls['author'].value)">New author should contain only latin letters and numbers.</span>
         <div class="course__authors" 
         formArrayName="authors"
-        *ngFor="let author of authors.controls; let i = index">
+        *ngFor="let author of  getAuthors().controls; let i = index">
           <!--Use the name `authors` for the form array.-->
           {{ author.value }}
           <button  class="authors_single-icon"><fa-icon  [icon]="['fas', 'plus']"></fa-icon></button>

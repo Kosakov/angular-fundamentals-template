@@ -11,6 +11,7 @@ import { CoursesService } from '@app/services/courses.service';
 import { CoursesComponent } from './features/courses/courses.component';
 import { CoursesListComponent } from './features/courses/courses-list/courses-list.component';
 
+
 @NgModule({
   declarations: [AppComponent, CourseInfoComponent, CoursesComponent, CoursesListComponent],
   imports: [
