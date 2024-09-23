@@ -43,14 +43,14 @@
         <div class="course__flex" formGroupName="author">
           <!--Use the name `author` for the form control.-->
           <input type="text" id="author" placeholder="Input Author Name"
-          formControlName="name"/>
+          formControlName="author"/>
           <app-button id="createAuthor" buttonText="Create Author" (click)="createAuthor()" type="button"></app-button>
         </div>
-        <span id="authorErrorMessage" *ngIf=" invalidAuthorName || (courseForm.controls['author'].touched && courseForm.controls['author'].invalid && !courseForm.controls['author'].value)">New author should contain only latin letters and numbers.</span>
+        <span id="authorErrorMessage" class="text-danger" *ngIf=" invalidAuthorName || (courseForm.controls['author'].touched && courseForm.controls['author'].invalid && !courseForm.controls['author'].value)">New author should contain only latin letters and numbers.</span>
         <div class="course__authors" 
         formArrayName="authors">
         <div *ngFor="let author of getAuthors().controls; let i = index" >
-          <span>{{author.get('name')?.value['AuthorValue']}}</span>
+          <span>{{author.get('author')?.value['AuthorValue']}}</span>
           
           <button class="authors_single-icon" (click)="createCourseAuthor(i)">
             <fa-icon [icon]="['fas', 'plus']"></fa-icon>
@@ -61,7 +61,7 @@
         formArrayName="courseAuthors">
         <h3>Course Authors</h3>
         <div *ngFor="let author of  getCourseAuthors().controls; let i = index">
-         <span>{{author.get('name')?.value['AuthorValue']}}</span>
+         <span>{{author.get('author')?.value['AuthorValue']}}</span>
          <button  class="authors_single-icon" (click)="moveCourseAuthor(i)"><fa-icon  [icon]="['fas', 'trash']" ></fa-icon></button>
         </div>
         </div>

@@ -29,11 +29,11 @@ export class CourseFormComponent{
       title: new FormControl('', [Validators.required, Validators.minLength(2)]),
       description: new FormControl('', [Validators.required, Validators.minLength(2)]),
       author: this.fb.group({
-        name: new FormControl('', [Validators.minLength(2), Validators.pattern(this.authorRegex)]),
+        author: new FormControl('', [Validators.minLength(2), Validators.pattern(this.authorRegex)]),
       }),
       authors: this.fb.array([]),
       courseAuthors: this.fb.array([]),
-      duration: new FormControl(0, [Validators.required, Validators.min(0)]),
+      duration: new FormControl("", [Validators.required, Validators.min(0)]),
     });
   }
 
@@ -47,7 +47,7 @@ export class CourseFormComponent{
     this.invalidDescription=this.courseForm.controls['description'].errors?.['required'] || this.courseForm.controls['description'].errors?.['minlength']?true:false
     this.invalidDuration=this.courseForm.controls['duration'].errors?.['required'] || this.courseForm.controls['duration'].errors?.['min']?true:false
     this.invalidAuthorName=this.courseForm.controls['author'].invalid?true:false
-    //console.log(this.courseForm.get('author') as FormGroup)
+    console.log(this.courseForm.get('author') as FormGroup)
   }
 
   getAuthors():FormArray {
@@ -60,8 +60,8 @@ export class CourseFormComponent{
 
   createAuthor():void {
     const authorGroup=this.courseForm.get('author') as FormGroup
-    const newAuthorControl = authorGroup.get('name');
-    const AuthorValue = authorGroup.get('name')?.value;
+    const newAuthorControl = authorGroup.get('author');
+    const AuthorValue = authorGroup.get('author')?.value;
     const authorId = uuidv4();
 
 
@@ -69,7 +69,7 @@ export class CourseFormComponent{
     //console.log(newAuthorControl)
     this.getAuthors().push(this.fb.group({
       id:{authorId},
-      name: {AuthorValue}
+      author: {AuthorValue}
     }));
     newAuthorControl?.setValue('');
     this.invalidAuthorName=false
