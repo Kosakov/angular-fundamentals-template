@@ -12,9 +12,10 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './course-form.component.html',
   styleUrls: ['./course-form.component.scss'],
 })
-export class CourseFormComponent  implements OnInit{
+export class CourseFormComponent{
   constructor(public fb: FormBuilder, public library: FaIconLibrary) {
     library.addIconPacks(fas);
+    this.buildForm();
   }
   courseForm!: FormGroup;
   authorRegex:string='^(?=.*[a-zA-Z])[a-zA-Z0-9]+$'
@@ -23,7 +24,7 @@ export class CourseFormComponent  implements OnInit{
   invalidDuration:boolean=false
   invalidAuthorName:boolean=false
   
-  ngOnInit() {
+  buildForm() {
     this.courseForm = this.fb.group({
       title: new FormControl('', [Validators.required, Validators.minLength(2)]),
       description: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -39,7 +40,7 @@ export class CourseFormComponent  implements OnInit{
 
 
 
-  onSubmit(){
+  onSubmit():void{
     //console.log(this.courseForm)
     
     this.invalidTitle=this.courseForm.controls['title'].errors?.['required'] || this.courseForm.controls['title'].errors?.['minlength']?true:false
@@ -49,15 +50,15 @@ export class CourseFormComponent  implements OnInit{
     //console.log(this.invalidAuthorName)
   }
 
-  getAuthors() {
+  getAuthors():FormArray {
     return this.courseForm.get("authors") as FormArray;
     }
 
-  getCourseAuthors() {
+  getCourseAuthors():FormArray {
       return this.courseForm.get("courseAuthors") as FormArray;
    }   
 
-  createAuthor() {
+  createAuthor():void {
     const authorGroup=this.courseForm.get('author') as FormGroup
     const newAuthorControl = authorGroup.get('name');
     const AuthorValue = authorGroup.get('name')?.value;
@@ -76,7 +77,7 @@ export class CourseFormComponent  implements OnInit{
     this.invalidAuthorName=true
   }
 
-  createCourseAuthor(index:number){
+  createCourseAuthor(index:number):void{
   let tempAuthor=this.getAuthors().at(index)
   this.getCourseAuthors().push(tempAuthor)
   this.getAuthors().removeAt(index)
@@ -86,7 +87,7 @@ export class CourseFormComponent  implements OnInit{
   //  this.getAuthors().removeAt(index);
   //}
 
-  moveCourseAuthor(index: number) {
+  moveCourseAuthor(index: number):void {
     let tempAuthor=this.getCourseAuthors().at(index)
     this.getAuthors().push(tempAuthor)
     this.getCourseAuthors().removeAt(index)
