@@ -46,8 +46,8 @@ export class CourseFormComponent{
     this.invalidTitle=this.courseForm.controls['title'].errors?.['required'] || this.courseForm.controls['title'].errors?.['minlength']?true:false
     this.invalidDescription=this.courseForm.controls['description'].errors?.['required'] || this.courseForm.controls['description'].errors?.['minlength']?true:false
     this.invalidDuration=this.courseForm.controls['duration'].errors?.['required'] || this.courseForm.controls['duration'].errors?.['min']?true:false
-    this.invalidAuthorName=this.courseForm.controls['author'].errors?.['pattern']?true:false
-    //console.log(this.invalidAuthorName)
+    this.invalidAuthorName=this.courseForm.controls['author'].invalid?true:false
+    //console.log(this.courseForm.get('author') as FormGroup)
   }
 
   getAuthors():FormArray {
@@ -65,7 +65,7 @@ export class CourseFormComponent{
     const authorId = uuidv4();
 
 
-    if (newAuthorControl?.value){
+    if (newAuthorControl?.value && newAuthorControl.valid){
     //console.log(newAuthorControl)
     this.getAuthors().push(this.fb.group({
       id:{authorId},
