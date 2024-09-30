@@ -1,22 +1,23 @@
 <app-header class="app-header">
-  <ng-container *ngIf="!isLoggedIn">
+  <ng-container *ngIf="isLoggedIn">
     <p>{{userName}}</p>
-    <app-button [buttonText]="buttonLogout"  (click)="toggleLogin()"></app-button>
+    <app-button [buttonText]="buttonLogout"   routerLink="" (click)="logout()"></app-button>
   </ng-container>
-  <app-button [buttonText]="buttonLogin" (click)="toggleLogin()" *ngIf="isLoggedIn"></app-button>
+  <app-button [buttonText]="buttonLogin" *ngIf="!isLoggedIn" routerLink="/login" ></app-button>
 </app-header>
 <div class="app-root">
   <!-- Search component -->
 
 
   <!-- Info component -->
-    <!-- <app-info 
+ <app-info 
   [title]="infoTitle" 
-  [text]="infoCurrentText">
+  [text]="infoCurrentText"
+  >
     <app-button 
-    [buttonText]="buttonInfo">
+    [buttonText]="buttonInfo" routerLink="courses/add">
   </app-button>
-  </app-info>-->
+  </app-info>
 
   <!-- Course Card component -->
 
@@ -24,12 +25,12 @@
 
   <!--Login Form component -->
    <!-- <app-login-form></app-login-form> -->
-
+   <router-outlet></router-outlet>
   <!-- Login Form component -->
   <!--<app-registration-form></app-registration-form>-->
 
   <!-- Login Form component -->
-<app-course-form></app-course-form>
+   <!--<app-course-form></app-course-form>-->
 
   <!-- Modal component -->
   <!-- <app-modal [message]="'Message'" [title]="'Title'" [okButtonText]="'Ok'" [cancelButtonText]="'Cancel'"></app-modal> -->

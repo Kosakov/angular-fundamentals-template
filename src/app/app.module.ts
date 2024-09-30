@@ -10,6 +10,10 @@ import { CoursesStoreService } from '@app/services/courses-store.service';
 import { CoursesService } from '@app/services/courses.service';
 import { CoursesComponent } from './features/courses/courses.component';
 import { CoursesListComponent } from './features/courses/courses-list/courses-list.component';
+import { RouterModule } from '@angular/router';
+import { routes } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import { SessionStorageService } from './auth/services/session-storage.service';
 
 
 @NgModule({
@@ -18,9 +22,10 @@ import { CoursesListComponent } from './features/courses/courses-list/courses-li
     BrowserModule,
     SharedModule,
     FontAwesomeModule,
-    
+    RouterModule.forRoot(routes),
+    HttpClientModule
   ],
-  providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService],
+  providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService,SessionStorageService,Window],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

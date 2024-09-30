@@ -1,6 +1,8 @@
-import { Component} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {mockedCoursesList} from '@shared/mocks/mock'
 import { Course } from '@app/features/courses/interfaces';
+import { CoursesStoreService } from '@app/services/courses-store.service';
+import { OnInitEffects } from '@ngrx/effects';
 
 @Component({
   selector: 'app-courses',
@@ -9,13 +11,24 @@ import { Course } from '@app/features/courses/interfaces';
 })
 
 
-export class CoursesComponent{
-  courses:Course[]=mockedCoursesList
+export class CoursesComponent implements OnInit{
+  constructor(private CoursesStoreService:CoursesStoreService){}
+  //courses:Course[]=mockedCoursesList
+  courses:any[]=[]
   selectedCourse: any;
   clickedBack:boolean=true;
   searched: any;
 
   editable = true; 
+  ngOnInit(){
+    this.CoursesStoreService.getAll(); 
+    this.CoursesStoreService.courses$.subscribe((courses) => {
+      this.courses = courses;
+  });
+ 
+  }
+
+
 
   handleShowCourse(course: Course) {
     this.selectedCourse = course;

@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm,FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '@app/auth/services/auth.service';
+import { User } from '@app/auth/services/user.interface';
 
 @Component({
   selector: 'app-login-form',
@@ -11,14 +13,33 @@ export class LoginFormComponent{
   @ViewChild("loginForm") public loginForm!: NgForm;
   showEmailErrorText=false
   showPassErrorText=false
-  onSubmit(){
-    console.log(this.loginForm.controls)
-    console.log(this.loginForm.controls['email']?.touched)
-    if (this.loginForm.controls['email']?.touched || this.loginForm.controls['email']?.errors?.['invalidEmail'] || !this.loginForm.controls['email']?.["value"] ){
-      this.showEmailErrorText=true
-    }
-    else{
-      this.showEmailErrorText=false
+  errorMessage: string="";
+  
+
+  constructor(private router: Router, private authService:AuthService) { }
+
+  onSubmit(): void {
+    if (this.loginForm.valid) {
+        const user: User = {
+            email: this.loginForm.value.email,
+            password: this.loginForm.value.password
+        };
+
+        this.authService.login(user).subscribe({
+            next: (response) => {
+                // Handle successful login
+                if (response.successful) {
+                    // Navigate to the courses page or another route
+                    this.router.navigate(['/courses']);
+                    
+                }
+            },
+            error: (error) => {
+                // Handle login error
+                this.errorMessage = 'Login failed. Please check your credentials.';
+                //console.error('Login error:', error);
+            }
+        });
     }
 
 
@@ -26,8 +47,9 @@ export class LoginFormComponent{
       this.showPassErrorText=true
     }
 
-
-
+  }
+  navigateToRegistration() {
+    this.router.navigate(['/registration']); 
   }
 }
 

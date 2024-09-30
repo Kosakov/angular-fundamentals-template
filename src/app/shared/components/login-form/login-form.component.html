@@ -21,7 +21,7 @@
           <app-button buttonText='Login' (click)="loginForm.ngSubmit.emit()"></app-button>
         </div>
         <div class="form__text">
-          If you don't have an account you may <strong>Registration</strong>
+          If you don't have an account you may <span  (click)="navigateToRegistration()" id="registerText">Registration</span >
         </div>
       </div>
     </div>

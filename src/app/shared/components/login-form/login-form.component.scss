@@ -7,3 +7,17 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+
+.form__text{
+  font-size: 15px;
+
+  #registerText{
+    font-weight: 600;
+  }
+
+  #registerText:hover{
+    cursor:pointer;
+    border-bottom: 1px solid black;
+  }
+}

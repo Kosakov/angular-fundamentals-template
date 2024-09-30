@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalComponent } from './components/modal/modal.component';
 
+
 import {
   HeaderComponent,
   ButtonComponent,

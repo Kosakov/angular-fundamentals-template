@@ -1,29 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import {
   FormArray,
-  FormBuilder, FormControl, FormGroup, Validators
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
 } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { CoursesStoreService } from '@app/services/courses-store.service';
+import { AuthorResponse } from '@app/services/author.interface';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-course-form',
   templateUrl: './course-form.component.html',
   styleUrls: ['./course-form.component.scss'],
 })
-export class CourseFormComponent{
-  constructor(public fb: FormBuilder, public library: FaIconLibrary) {
+export class CourseFormComponent {
+  courseForm!: FormGroup;
+  authorRegex: string = '^(?=.*[a-zA-Z])[a-zA-Z0-9]+$';
+  invalidTitle: boolean = false;
+  invalidDescription: boolean = false;
+  invalidDuration: boolean = false;
+  invalidAuthorName: boolean = false;
+  authorsArr: string[] = [];
+  authorIdsArr: string[] = []; // Array to hold author IDs
+  courseAuthors=[]
+  constructor(
+    public fb: FormBuilder,
+    public library: FaIconLibrary,
+    private CoursesStoreService: CoursesStoreService
+  ) {
     library.addIconPacks(fas);
     this.buildForm();
   }
-  courseForm!: FormGroup;
-  authorRegex:string='^(?=.*[a-zA-Z])[a-zA-Z0-9]+$'
-  invalidTitle:boolean=false
-  invalidDescription:boolean=false
-  invalidDuration:boolean=false
-  invalidAuthorName:boolean=false
-  
+
   buildForm() {
     this.courseForm = this.fb.group({
       title: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -33,64 +46,100 @@ export class CourseFormComponent{
       }),
       authors: this.fb.array([]),
       courseAuthors: this.fb.array([]),
-      duration: new FormControl("", [Validators.required, Validators.min(0)]),
+      duration: new FormControl('', [Validators.required, Validators.min(0)]),
     });
   }
 
+  onSubmit(): void {
+    const title = this.courseForm.controls['title'];
+    const description = this.courseForm.controls['description'];
+    const duration = this.courseForm.controls['duration'];
+    const author = this.courseForm.controls['author'];
 
+    this.invalidTitle = title.errors?.['required'] || title.errors?.['minlength'] ? true : false;
+    this.invalidDescription = description.errors?.['required'] || description.errors?.['minlength'] ? true : false;
+    this.invalidDuration = duration.errors?.['required'] || duration.errors?.['min'] ? true : false;
+    this.invalidAuthorName = author.invalid ? true : false;
 
+    if (this.courseForm.valid) {
+      const course = {
+        title: title.value,
+        description: description.value,
+        duration: +duration.value,
+        authors: this.authorIdsArr, // Use the array of author IDs
+      };
 
-  onSubmit():void{
-    //console.log(this.courseForm)
-    
-    this.invalidTitle=this.courseForm.controls['title'].errors?.['required'] || this.courseForm.controls['title'].errors?.['minlength']?true:false
-    this.invalidDescription=this.courseForm.controls['description'].errors?.['required'] || this.courseForm.controls['description'].errors?.['minlength']?true:false
-    this.invalidDuration=this.courseForm.controls['duration'].errors?.['required'] || this.courseForm.controls['duration'].errors?.['min']?true:false
-    this.invalidAuthorName=this.courseForm.controls['author'].invalid?true:false
-    console.log(this.courseForm.get('author') as FormGroup)
-  }
-
-  getAuthors():FormArray {
-    return this.courseForm.get("authors") as FormArray;
+      // Call the service to create the course
+      this.CoursesStoreService.createCourse(course).subscribe({
+        next: (response) => {
+          console.log('Course created successfully:', response);
+        },
+        error: (err) => {
+          console.error('Error creating course:', err);
+        },
+      });
     }
+  }
 
-  getCourseAuthors():FormArray {
-      return this.courseForm.get("courseAuthors") as FormArray;
-   }   
+  getAuthors(): FormArray {
+    return this.courseForm.get('authors') as FormArray;
+  }
 
-  createAuthor():void {
-    const authorGroup=this.courseForm.get('author') as FormGroup
+  getCourseAuthors(): FormArray {
+    return this.courseForm.get('courseAuthors') as FormArray;
+  }
+
+  createAuthor(): void {
+    const authorGroup = this.courseForm.get('author') as FormGroup;
     const newAuthorControl = authorGroup.get('author');
-    const AuthorValue = authorGroup.get('author')?.value;
-    const authorId = uuidv4();
+    const authorValue = newAuthorControl?.value;
 
+    if (newAuthorControl?.valid) {
 
-    if (newAuthorControl?.value && newAuthorControl.valid){
-    //console.log(newAuthorControl)
-    this.getAuthors().push(this.fb.group({
-      id:{authorId},
-      author: {AuthorValue}
-    }));
-    newAuthorControl?.setValue('');
-    this.invalidAuthorName=false
+        // Create the author using the service
+        this.CoursesStoreService.createAuthor(authorValue).subscribe({
+            next: (response: any) => {
+                if (response.successful) {
+                    const authorId = response.result.id; // Get the created author's ID
+
+                    // Add author to the authors FormArray
+                    this.getAuthors().push(this.fb.group({
+                        id: authorId, // Use the actual ID
+                        author: authorValue,
+                    }));
+
+                    newAuthorControl.setValue('');
+                    this.invalidAuthorName = false;
+                }
+            },
+            error: (err: any) => {
+                console.error('Error creating author:', err);
+            },
+        });
+    } else {
+        this.invalidAuthorName = true;
+    }
+}
+
+createCourseAuthor(index: number): void {
+  let tempAuthor = this.getAuthors().at(index);
+  const authorId = tempAuthor.get('id')?.value; // Get the ID from the temporary author
+  if (authorId) {
+      this.authorIdsArr.push(authorId); // Add the author ID to the array
   }
-    this.invalidAuthorName=true
-  }
 
-  createCourseAuthor(index:number):void{
-  let tempAuthor=this.getAuthors().at(index)
-  this.getCourseAuthors().push(tempAuthor)
-  this.getAuthors().removeAt(index)
-  }
-  
-  //removeAuthor(index: number) {
-  //  this.getAuthors().removeAt(index);
-  //}
+  this.getCourseAuthors().push(tempAuthor);
+  this.getAuthors().removeAt(index);
+}
 
-  moveCourseAuthor(index: number):void {
-    let tempAuthor=this.getCourseAuthors().at(index)
-    this.getAuthors().push(tempAuthor)
-    this.getCourseAuthors().removeAt(index)
+  moveCourseAuthor(index: number): void {
+    let tempAuthor = this.getCourseAuthors().at(index);
+    const authorId = tempAuthor.get('id')?.value; // Get the ID from the temporary author
+  if (authorId) {
+    const tempIDIndex=this.authorIdsArr.indexOf(authorId);
+      this.authorIdsArr.splice(tempIDIndex, 1)
   }
-
+    this.getAuthors().push(tempAuthor);
+    this.getCourseAuthors().removeAt(index);
+  }
 }
