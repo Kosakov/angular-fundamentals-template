@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Course } from '../features/courses/interfaces';
-import {Author,AuthorResponse,Authors} from './author.interface'
+import {Author,AuthorResponse,Authors, CourseResponse} from './author.interface'
 import { SessionStorageService } from '@app/auth/services/session-storage.service';
 
 
@@ -40,8 +40,12 @@ export class CoursesService {
           );
     }
 
-    getCourse(id: string):Observable<Course> {
-        return this.http.get<Course>(`${this.apiUrl}/courses/${id}`).pipe(
+    getCourse(id: string):Observable<CourseResponse> {
+      const token = this.SessionStorageService.getToken(); // Retrieve the token from session storage
+        const headers = new HttpHeaders({
+        'Authorization': `${token}` // Add the token to the Authorization header
+      });
+        return this.http.get<CourseResponse>(`${this.apiUrl}/courses/${id}`,{headers}).pipe(
             catchError(this.handleError)
           );
     }
@@ -52,6 +56,7 @@ export class CoursesService {
           );
     }
 
+    
     filterCourses(value: string): Observable<Course[]> {
         let params = new HttpParams();
     

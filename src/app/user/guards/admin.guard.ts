@@ -17,14 +17,15 @@ export class AdminGuard implements CanActivate {
 
     canActivate(): boolean | UrlTree {
         this.userStore.isAdmin$.subscribe((bool=>{
+            console.log(bool)
             this.isAdmin=bool
         }))       // Check if the user is an admin
         if (this.isAdmin) {
-            console.log("true AdminGuard")
+            //console.log("true AdminGuard")
             return true; // Allow access if admin
         } else {
             // Redirect to /courses if not admin
-            console.log("false AdminGuard")
+            //console.log("false AdminGuard")
             return this.router.createUrlTree(['']);
         }
     }

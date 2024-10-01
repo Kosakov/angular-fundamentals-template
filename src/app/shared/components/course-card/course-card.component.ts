@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
+import { Course } from '@app/features/courses/interfaces';
 
 @Component({
   selector: 'app-course-card',
@@ -7,11 +8,7 @@ import { Component, Input, OnInit, Output,EventEmitter } from '@angular/core';
 })
 export class CourseCardComponent{
 
-  @Input() title!:string
-  @Input() description!:string
-  @Input() authors!:string[]
-  @Input() duration?:number
-  @Input() creationDate?:string
+  @Input() course!:Course
   @Output() clickOnShow=new EventEmitter<MouseEvent>()
   buttonText="Show Course"
   @Input() editable!:boolean

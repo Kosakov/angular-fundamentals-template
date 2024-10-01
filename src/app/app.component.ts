@@ -3,6 +3,7 @@ import { AuthService } from './auth/services/auth.service';
 import { SessionStorageService } from './auth/services/session-storage.service';
 import { UserStoreService } from './user/services/user-store.service';
 import { CoursesStoreService } from '@app/services/courses-store.service';
+import { UserService } from './user/services/user.service';
 
 
 @Component({
@@ -20,20 +21,23 @@ export class AppComponent implements OnInit{
   infoCurrentText:string=`Please use 'Add New Course' button to add your first course`
   buttonInfo:string="Add New Course"
   hasCourses:boolean=false
+  authors$:any=[]
 
-
-  constructor(private AuthServ:AuthService,private UserStore:UserStoreService,private sessionStorage:SessionStorageService,private coursesStoreService:CoursesStoreService){
+  constructor(private AuthServ:AuthService,
+    private UserStore:UserStoreService,
+    private sessionStorage:SessionStorageService,
+    private coursesStoreService:CoursesStoreService,
+    private UserService:UserService){
   }
   ngOnInit(): void {
-
+    this.UserStore.getUser()
     this.AuthServ.isAuthorized$.subscribe((isAuthorized) => {
       this.isLoggedIn=isAuthorized
     })    
     if (this.sessionStorage.getToken()){
-      this.UserStore.getUser()
+      //
       this.isLoggedIn=true
       this.UserStore.name$.subscribe((name)=>{
-        //console.log(name)
         this.userName=name
       })
     }

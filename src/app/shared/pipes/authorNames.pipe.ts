@@ -1,31 +1,31 @@
 import { Pipe } from "@angular/core";
 //import {mockedAuthorsList} from '@shared/mocks/mock'
 import { CoursesStoreService } from '@app/services/courses-store.service';
+import { map, Observable } from "rxjs";
 
 
 @Pipe({
-    name: 'author'
+    name: 'author',
+    pure: false
 })
 export class AuthorPipe {
-  constructor(private CoursesStoreService:CoursesStoreService){}
-  allAuthorsArr:any[]=[]
+  authors$: Observable<any[]>;
 
-    transform(ids: string[] | undefined): string[] {
-      this.CoursesStoreService.getAllAuthors()
-      this.CoursesStoreService.authors$.subscribe((author)=>{
-      author.result.map((res)=>{
-        console.log
-         //this.allAuthorsArr.push(res)
-      })
-       
-      })
-        if (ids){
-          //console.log(this.allAuthorsArr)
-        return ids.map(id => {
-          const author = this.allAuthorsArr.find(author => author.id === id);
-          return author ? author.name : 'No Author'; 
-        });
-      }
-      return ["Author not found is authors list!"]
-    }
+  constructor(private CoursesStoreService:CoursesStoreService){
+    this.authors$ = this.CoursesStoreService.authors$;
+
+  }
+
+  transform(ids: string[]): Observable<string[]> {
+    // Transform the IDs into the corresponding names
+    return this.authors$.pipe(
+      map((authors) =>
+        ids.map((id) => {
+
+          const author = authors.find((a) => a.id === id);
+          return author ? author.name : 'Unknown';
+        })
+      )
+    );
+  }
 }

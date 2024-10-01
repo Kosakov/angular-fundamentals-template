@@ -95,7 +95,6 @@ export class CourseFormComponent {
     const authorValue = newAuthorControl?.value;
 
     if (newAuthorControl?.valid) {
-
         // Create the author using the service
         this.CoursesStoreService.createAuthor(authorValue).subscribe({
             next: (response: any) => {

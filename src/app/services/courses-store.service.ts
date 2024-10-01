@@ -18,8 +18,10 @@ export class CoursesStoreService {
 
     courses$: Observable<Course[]> = this.courses$$.asObservable();
     isLoading$: Observable<boolean> = this.isLoading$$.asObservable();
-    authors$:Observable<Author> = this.authorsSubject.asObservable();
+    authors$:Observable<any> = this.authorsSubject.asObservable();
     author$:Observable<Author[]> = this.authorSubject.asObservable();
+    course$: Observable<any> = this.courseSubject.asObservable();
+
 
     constructor(private coursesService: CoursesService) {}
 
@@ -36,6 +38,7 @@ export class CoursesStoreService {
                 },
                 error: (err) => {
                     this.coursesService.handleError(err);
+                    console.log("Probleem")
                     console.error('Error from getAll', err);
                 }
             }
@@ -62,7 +65,8 @@ export class CoursesStoreService {
         .subscribe(
             {
                 next:(course)=>{
-                    this.courseSubject.next(course);
+                    //console.log(course)
+                    this.courseSubject.next(course.result);
                 },
                 error: (err) => {
                     this.coursesService.handleError(err);
@@ -156,7 +160,7 @@ export class CoursesStoreService {
         .subscribe(
             {
                 next:(author)=>{
-                    this.authorsSubject.next(author);
+                    this.authorsSubject.next(author.result);
                 },
                 error: (err) => {
                     this.coursesService.handleError(err);

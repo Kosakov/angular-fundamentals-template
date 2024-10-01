@@ -31,6 +31,7 @@ constructor(
                     let token=response.result
                     this.sessionStorage.setToken(token)
                     this.isAuthorised=true
+                    this.isAuthorized$$.next(true)
                 }
                 return response
             })

@@ -1,8 +1,11 @@
 import { Component, OnInit} from '@angular/core';
-import {mockedCoursesList} from '@shared/mocks/mock'
 import { Course } from '@app/features/courses/interfaces';
 import { CoursesStoreService } from '@app/services/courses-store.service';
-import { OnInitEffects } from '@ngrx/effects';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+
+
+
 
 @Component({
   selector: 'app-courses',
@@ -12,16 +15,17 @@ import { OnInitEffects } from '@ngrx/effects';
 
 
 export class CoursesComponent implements OnInit{
-  constructor(private CoursesStoreService:CoursesStoreService){}
+  constructor(private CoursesStoreService:CoursesStoreService,private router:Router,private location:Location){}
   //courses:Course[]=mockedCoursesList
   courses:any[]=[]
-  selectedCourse: any;
   clickedBack:boolean=true;
   searched: any;
 
   editable = true; 
   ngOnInit(){
+    this.CoursesStoreService.getAllAuthors()
     this.CoursesStoreService.getAll(); 
+
     this.CoursesStoreService.courses$.subscribe((courses) => {
       this.courses = courses;
   });
@@ -31,10 +35,10 @@ export class CoursesComponent implements OnInit{
 
 
   handleShowCourse(course: Course) {
-    this.selectedCourse = course;
     this.clickedBack=false
-    //console.log('Show course:', course);
-    
+    console.log(course.id)
+    this.router.navigate([`courses/${course.id}`]);
+
   }
 
   handleEditCourse(course: Course) {
@@ -47,9 +51,9 @@ export class CoursesComponent implements OnInit{
     
   }
 
-  handleBack(isclicked:any):void {
-    this.clickedBack=isclicked
-    //console.log(isclicked)
+  handleBack():void {
+    this.clickedBack = true; // Reset UI state for showing the courses list
+    this.router.navigate(['/courses']);
     
   }
 

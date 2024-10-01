@@ -24,13 +24,13 @@ export class UserStoreService {
                     next: (info: any) => { 
                         let name=info.result.name
                         if (info.result) {
-                            //console.log(info.result)
+                            console.log(info.result)
                             //console.log('Kotkaaaa')
                             this.name$$.next(name); 
                             if (info.result.role === 'admin')
                             {
                                 this.isAdmin$$.next(true); 
-                                this.isAdminValue=true
+                                
                             }
                         }
                         else{
@@ -41,11 +41,11 @@ export class UserStoreService {
                         console.error('Error fetching user:', err);
                         //// Optionally, you can reset name$$ and isAdmin$$ to default values in case of error
                         //this.name$$.next(''); // Reset name in case of error
-                        //this.isAdmin$$.next(false); // Reset isAdmin to false in case of error
+                        this.isAdmin$$.next(false); // Reset isAdmin to false in case of error
                     }
                 });
             }
-            
+            this.isAdmin$$.next(false);
 
     }
 
@@ -55,8 +55,8 @@ export class UserStoreService {
     // Getter for isAdmin
     get isAdmin(): boolean {
         //console.log(this.isAdmin$$.getValue())
-        return this.isAdminValue;
-        //return this.isAdmin$$.getValue(); // Return the current value of isAdmin$$
+        //return this.isAdminValue;
+        return this.isAdmin$$.getValue(); // Return the current value of isAdmin$$
         
         
     }

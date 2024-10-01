@@ -3,6 +3,7 @@ import { NgForm,FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '@app/auth/services/auth.service';
 import { User } from '@app/auth/services/user.interface';
+import { UserStoreService } from '@app/user/services/user-store.service';
 
 @Component({
   selector: 'app-login-form',
@@ -16,10 +17,12 @@ export class LoginFormComponent{
   errorMessage: string="";
   
 
-  constructor(private router: Router, private authService:AuthService) { }
+  constructor(private router: Router, private authService:AuthService, private userStore:UserStoreService) { }
 
   onSubmit(): void {
+    
     if (this.loginForm.valid) {
+     
         const user: User = {
             email: this.loginForm.value.email,
             password: this.loginForm.value.password
@@ -29,6 +32,7 @@ export class LoginFormComponent{
             next: (response) => {
                 // Handle successful login
                 if (response.successful) {
+                     this.userStore.getUser()
                     // Navigate to the courses page or another route
                     this.router.navigate(['/courses']);
                     
