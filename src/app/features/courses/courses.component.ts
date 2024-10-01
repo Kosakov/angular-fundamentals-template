@@ -25,9 +25,9 @@ export class CoursesComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       let title = params["title"];
-      //console.log(title)
+      console.log(title)
       if (title) {
-        this.CoursesStoreService.filterCourses(title)
+        this.CoursesStoreService.filterCourses(title.split(","))
         this.CoursesStoreService.courses$.subscribe((filteredCourses) => {
           //console.log(filteredCourses);
           if (filteredCourses && filteredCourses.length>0){

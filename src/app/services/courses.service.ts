@@ -57,11 +57,14 @@ export class CoursesService {
     }
 
     
-    filterCourses(value: string): Observable<CourseResponse> {
+    filterCourses(values: string[]): Observable<CourseResponse> {
         let params = new HttpParams();
     
-        if (value) {
-          params = params.set('title', value);
+        if (values && values.length > 0) {
+          const titles = values.join(',');
+          console.log(values)
+          params = params.set('title', titles);
+          console.log(params)
         }
     
         return this.http.get<CourseResponse>(`${this.apiUrl}/courses/filter`, { params });

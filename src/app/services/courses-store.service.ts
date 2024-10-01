@@ -133,10 +133,10 @@ export class CoursesStoreService {
         )
     }
 
-    filterCourses(value: string) {
+    filterCourses(values: string[]) {
             this.isLoading$$.next(true); // Start loading
         
-            this.coursesService.filterCourses(value) // Call the service method with the filter value
+            this.coursesService.filterCourses(values) // Call the service method with the filter value
             .pipe(
                 finalize(() => this.isLoading$$.next(false)) // Stop loading
             )
