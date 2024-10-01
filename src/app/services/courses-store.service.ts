@@ -3,18 +3,18 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { CoursesService } from './courses.service';
 import { Course } from '../features/courses/interfaces';
 import { catchError, finalize, map, tap } from 'rxjs/operators';
-import { Author, AuthorResponse } from './author.interface';
+import { Author, AuthorResponse,CourseResponse } from './author.interface';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CoursesStoreService {
-    private courses$$ = new BehaviorSubject<Course[]>([]);
+    private courses$$ = new BehaviorSubject<any>(null);
     private isLoading$$ = new BehaviorSubject<boolean>(false);
     private courseSubject = new BehaviorSubject<any>(null);
     private authorsSubject = new BehaviorSubject<any>([]);
     private authorSubject = new BehaviorSubject<any>(null);
-
+    private filteredCourses$$ = new BehaviorSubject<any>(null);
 
     courses$: Observable<Course[]> = this.courses$$.asObservable();
     isLoading$: Observable<boolean> = this.isLoading$$.asObservable();
@@ -34,6 +34,7 @@ export class CoursesStoreService {
         .subscribe(
             {
                 next:(courses)=>{
+                    console.log(courses.result)
                     this.courses$$.next(courses.result);
                 },
                 error: (err) => {
@@ -87,7 +88,7 @@ export class CoursesStoreService {
             {
             next:(course)=>{
             const currentCourses = this.courses$$.getValue(); // Get the current list of courses
-            const index=currentCourses.findIndex(course=>course.id===id)
+            const index=currentCourses.findIndex((course:Course)=>course.id===id)
             if (index!==-1){
                 currentCourses[index]=course
                 this.courses$$.next([...currentCourses])
@@ -115,7 +116,7 @@ export class CoursesStoreService {
             {
             next:(course)=>{
             const currentCourses = this.courses$$.getValue(); // Get the current list of courses
-            const index=currentCourses.findIndex(course=>course.id===id)
+            const index=currentCourses.findIndex((course:Course)=>course.id===id)
             if (index!==-1){
                 currentCourses.splice(index,1)
                 this.courses$$.next([...currentCourses])
@@ -141,7 +142,8 @@ export class CoursesStoreService {
             )
             .subscribe({
                 next: (filteredCourses) => {
-                    this.courses$$.next(filteredCourses); // Update the subject with filtered courses
+                    console.log(filteredCourses)
+                    this.courses$$.next(filteredCourses.result); // Update the subject with filtered courses
                 },
                 error: (err) => {
                     this.coursesService.handleError(err); // Handle error consistently

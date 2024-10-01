@@ -21,7 +21,6 @@ export class CourseInfoComponent  implements OnInit{
     let courseId = this.route.snapshot.paramMap.get('id');
 
     if (courseId) {
-      console.log("Yes")
       // Call service to fetch the course by id
       this.coursesStoreService.getCourse(courseId);
     

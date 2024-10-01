@@ -24,7 +24,7 @@ export class UserStoreService {
                     next: (info: any) => { 
                         let name=info.result.name
                         if (info.result) {
-                            console.log(info.result)
+                            
                             //console.log('Kotkaaaa')
                             this.name$$.next(name); 
                             if (info.result.role === 'admin')

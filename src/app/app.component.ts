@@ -42,7 +42,7 @@ export class AppComponent implements OnInit{
       })
     }
     this.coursesStoreService.courses$.subscribe(courses => {
-      if (courses && courses.length > 0) {
+      if (courses) {
         this.infoTitle = "" // If there are courses, set flag to true
       } 
     });

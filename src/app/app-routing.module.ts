@@ -12,8 +12,9 @@ export const routes: Routes = [
     {path:"login",component:LoginFormComponent,canActivate:[NotAuthorizedGuard]},
     {path:"registration",component:RegistrationFormComponent,canActivate:[NotAuthorizedGuard]},
     {path:"courses",component:CoursesComponent,canLoad:[AuthorizedGuard]},
+    {path:"courses/filter",component:CoursesComponent,canLoad:[AuthorizedGuard]},
     {path:"courses/add",component:CourseFormComponent,canLoad:[AuthorizedGuard],canActivate:[AdminGuard]},
-    {path:"courses/:id",component:CourseInfoComponent},//,canLoad:[AuthorizedGuard]
+    {path:"courses/:id",component:CourseInfoComponent,canLoad:[AuthorizedGuard]},
     {path:"courses/edit/:id",component:CourseFormComponent,canLoad:[AuthorizedGuard],canActivate:[AdminGuard]},
     {path:"**",redirectTo: '/courses', pathMatch: 'full',canLoad:[AuthorizedGuard]}
 ];

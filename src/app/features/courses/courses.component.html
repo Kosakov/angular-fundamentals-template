@@ -11,4 +11,4 @@
 (deleteCourse)="handleDeleteCourse($event)"
 ></app-courses-list>
 
-<app-course-info  (backButtonPressed)="handleBack()"></app-course-info>
+<app-course-info  *ngIf="!clickedBack" (backButtonPressed)="handleBack()"></app-course-info>

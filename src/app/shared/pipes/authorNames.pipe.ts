@@ -17,7 +17,7 @@ export class AuthorPipe {
   }
 
   transform(ids: string[]): Observable<string[]> {
-    // Transform the IDs into the corresponding names
+  // Transform the IDs into the corresponding names
     return this.authors$.pipe(
       map((authors) =>
         ids.map((id) => {
@@ -27,5 +27,5 @@ export class AuthorPipe {
         })
       )
     );
-  }
+}
 }
