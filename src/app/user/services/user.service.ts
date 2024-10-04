@@ -22,7 +22,11 @@ export class UserService {
         });
     
         return this.http.get<User>(`${this.apiUrl}/me`, { headers }).pipe(
-          catchError(this.handleError) // Error handling function
+            catchError(error => {
+                // Handle the error here
+                console.error('Error occurred:', error);
+                return throwError(() => new Error('Failed to fetch data. Please try again.'));
+              }) // Error handling function
         );
     }
 

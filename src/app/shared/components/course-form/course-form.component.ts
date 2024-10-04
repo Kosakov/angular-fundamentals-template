@@ -25,9 +25,7 @@ export class CourseFormComponent {
   invalidDescription: boolean = false;
   invalidDuration: boolean = false;
   invalidAuthorName: boolean = false;
-  authorsArr: string[] = [];
   authorIdsArr: string[] = []; // Array to hold author IDs
-  courseAuthors=[]
   constructor(
     public fb: FormBuilder,
     public library: FaIconLibrary,

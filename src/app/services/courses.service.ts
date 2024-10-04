@@ -62,9 +62,9 @@ export class CoursesService {
     
         if (values && values.length > 0) {
           const titles = values.join(',');
-          console.log(values)
+          //console.log(values)
           params = params.set('title', titles);
-          console.log(params)
+          //console.log(params)
         }
     
         return this.http.get<CourseResponse>(`${this.apiUrl}/courses/filter`, { params });

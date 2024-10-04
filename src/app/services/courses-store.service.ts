@@ -135,18 +135,18 @@ export class CoursesStoreService {
 
     filterCourses(values: string[]) {
             this.isLoading$$.next(true); // Start loading
-        
+            console.log(values)
             this.coursesService.filterCourses(values) // Call the service method with the filter value
             .pipe(
                 finalize(() => this.isLoading$$.next(false)) // Stop loading
             )
             .subscribe({
                 next: (filteredCourses) => {
-                    console.log(filteredCourses)
+                    //console.log(filteredCourses)
                     this.courses$$.next(filteredCourses.result); // Update the subject with filtered courses
                 },
                 error: (err) => {
-                    this.coursesService.handleError(err); // Handle error consistently
+                     // Handle error consistently
                     console.error('Error from filterCourses', err); // Log error
                 }
             });
@@ -173,13 +173,12 @@ export class CoursesStoreService {
     }
 
     createAuthor(name: string): Observable<AuthorResponse> {
-        this.isLoading$$.next(true); // Start loading
+        this.isLoading$$.next(true);
         return this.coursesService.createAuthor(name).pipe(
             tap(newAuthor => {
                 const currentAuthors = this.authorsSubject.getValue();
                 // Update authorsSubject with new author
-                //console.log(currentAuthors)
-                //this.authorsSubject.next([...currentAuthors.result, newAuthor]);
+                this.authorsSubject.next([...currentAuthors, newAuthor.result]);
             }),
             finalize(() => this.isLoading$$.next(false)) // Stop loading
         );

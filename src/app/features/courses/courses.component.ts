@@ -3,7 +3,6 @@ import { Course } from "@app/features/courses/interfaces";
 import { CoursesStoreService } from "@app/services/courses-store.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { CoursesService } from "@app/services/courses.service";
-import { tap, toArray } from "rxjs";
 
 @Component({
   selector: "app-courses",
@@ -25,7 +24,6 @@ export class CoursesComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       let title = params["title"];
-      console.log(title)
       if (title) {
         this.CoursesStoreService.filterCourses(title.split(","))
         this.CoursesStoreService.courses$.subscribe((filteredCourses) => {
@@ -59,7 +57,8 @@ export class CoursesComponent implements OnInit {
   }
 
   handleEditCourse(course: Course) {
-    //console.log('Edit course:', course);
+    //console.log("work")
+    this.router.navigate([`courses/edit/${course.id}`]);
   }
 
   handleDeleteCourse(course: Course) {

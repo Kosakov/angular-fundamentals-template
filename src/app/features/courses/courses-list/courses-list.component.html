@@ -3,8 +3,8 @@
     [course]="course" 
     (clickOnShow)="handleShow(course)">
       <ng-container >
-        <app-button   *ngIf="editable" [icon]="'trash-can'"  (click)="handleEdit(course); $event.stopPropagation()" ></app-button>
-        <app-button   *ngIf="editable" [icon]="'pen'" (click)="handleDelete(course); $event.stopPropagation()"></app-button>
+        <app-button   [icon]="'trash-can'"  (click)="handleDelete(course); $event.stopPropagation()" ></app-button>
+        <app-button    [icon]="'pen'" (click)="handleEdit(course); $event.stopPropagation()"></app-button>
       </ng-container>
     </app-course-card>
   </ng-container>

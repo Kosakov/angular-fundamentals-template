@@ -20,7 +20,7 @@ export class SearchComponent {
     if (this.searchForm.valid) { 
       let searchArray: string[];
        searchArray = this.searchForm.value.searchInput.split(/\s+/);
-      console.log(searchArray)
+      //console.log(searchArray)
       this.router.navigate(['/courses/filter'], { queryParams: { title: searchArray.join(",") } });
       //this.search.emit(this.searchForm.value.searchInput); 
       //console.log(this.searchForm.value.searchInput)

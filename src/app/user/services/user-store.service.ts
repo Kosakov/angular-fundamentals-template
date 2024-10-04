@@ -39,9 +39,8 @@ export class UserStoreService {
                     },
                     error: (err) => {
                         console.error('Error fetching user:', err);
-                        //// Optionally, you can reset name$$ and isAdmin$$ to default values in case of error
-                        //this.name$$.next(''); // Reset name in case of error
-                        this.isAdmin$$.next(false); // Reset isAdmin to false in case of error
+
+                        this.isAdmin$$.next(false); 
                     }
                 });
             }
