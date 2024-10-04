@@ -71,7 +71,7 @@ export const requestDeleteCourseFail = createAction(
 // Filter courses
 export const requestFilteredCourses = createAction(
   CoursesConstants.REQUEST_FILTERED_COURSES,
-  props<{ searchValue: string }>()
+  props<{ title: string }>()
 );
 export const requestFilteredCoursesSuccess = createAction(
   CoursesConstants.REQUEST_FILTERED_COURSES_SUCCESS,

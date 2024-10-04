@@ -7,14 +7,15 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Course } from '@app/features/courses/interfaces';
 import { CourseResponse } from '@app/services/author.interface';
-
+import {Router} from '@angular/router'
 
 
 @Injectable()
 export class CoursesEffects {
   constructor(
     private actions$: Actions,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private router:Router
   ) {}
 
   // Get all courses
@@ -108,5 +109,13 @@ export class CoursesEffects {
   //  )
   //)
 //);
+
+redirectToTheCoursesPage$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(CoursesActions.requestCreateCourseSuccess, CoursesActions.requestEditCourseSuccess),
+    map(() => this.router.navigate(['/courses']))
+  ),
+  { dispatch: false }
+);
 
 }

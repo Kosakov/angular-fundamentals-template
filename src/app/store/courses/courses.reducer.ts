@@ -20,6 +20,9 @@ export const initialState: CoursesState = {
   errorMessage: null,
 };
 
+export const coursesFeatureKey = 'courses';
+
+
 export const coursesReducer = createReducer(
   initialState,
 
