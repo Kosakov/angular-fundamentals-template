@@ -31,6 +31,7 @@ export class AppComponent implements OnInit{
   }
   ngOnInit(): void {
     this.UserStore.getUser()
+    this.coursesStoreService.getAllAuthors()
     this.AuthServ.isAuthorized$.subscribe((isAuthorized) => {
       this.isLoggedIn=isAuthorized
     })    

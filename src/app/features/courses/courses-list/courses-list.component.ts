@@ -8,10 +8,10 @@ import { faTrashCan, faPen } from '@fortawesome/free-solid-svg-icons';
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss']
 })
-export class CoursesListComponent{
+export class CoursesListComponent {
   faTrashCan=faTrashCan
   faPen=faPen
-  @Input() courses!:Course[]
+  @Input() courses!:Course[]|null
   @Input() editable!: boolean;
   @Output() showCourse = new EventEmitter<Course>();
   @Output() editCourse=new EventEmitter<Course>()

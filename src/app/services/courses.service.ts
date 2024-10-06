@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Course } from '../features/courses/interfaces';
 import {Author,AuthorResponse,Authors, CourseResponse} from './author.interface'
 import { SessionStorageService } from '@app/auth/services/session-storage.service';
@@ -20,16 +20,13 @@ export class CoursesService {
 
     getAll(): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/courses/all`).pipe(
+            map(response => response.result),
             catchError(this.handleError)
           );
     }
 
     createCourse(course: Course): Observable<Course> { 
-      const token = this.SessionStorageService.getToken(); // Retrieve the token from session storage
-        const headers = new HttpHeaders({
-        'Authorization': `${token}` // Add the token to the Authorization header
-      });
-        return this.http.post<Course>(`${this.apiUrl}/courses/add`,course,{headers}).pipe(
+        return this.http.post<Course>(`${this.apiUrl}/courses/add`,course).pipe(
             catchError(this.handleError)
           );
     }
@@ -40,14 +37,11 @@ export class CoursesService {
           );
     }
 
-    getCourse(id: string):Observable<CourseResponse> {
-      const token = this.SessionStorageService.getToken(); // Retrieve the token from session storage
-        const headers = new HttpHeaders({
-        'Authorization': `${token}` // Add the token to the Authorization header
-      });
-        return this.http.get<CourseResponse>(`${this.apiUrl}/courses/${id}`,{headers}).pipe(
-            catchError(this.handleError)
-          );
+    getCourse(id: string): Observable<Course> {
+      return this.http.get<CourseResponse>(`${this.apiUrl}/courses/${id}`).pipe(
+        map(response => response.result),
+        catchError(this.handleError)
+      );
     }
 
     deleteCourse(id: string):Observable<Course> {
@@ -57,17 +51,19 @@ export class CoursesService {
     }
 
     
-    filterCourses(values: string[]): Observable<CourseResponse> {
+    filterCourses(values: string): Observable<any> {
         let params = new HttpParams();
     
         if (values && values.length > 0) {
-          const titles = values.join(',');
           //console.log(values)
-          params = params.set('title', titles);
+          params = params.set('title', values);
           //console.log(params)
         }
     
-        return this.http.get<CourseResponse>(`${this.apiUrl}/courses/filter`, { params });
+        return this.http.get<any>(`${this.apiUrl}/courses/filter`, { params }).pipe(
+          map(response => response.result),
+          catchError(this.handleError)
+        );
       }
 
     getAllAuthors():Observable<Authors> {
@@ -77,12 +73,7 @@ export class CoursesService {
     }
 
     createAuthor(name: string):Observable<AuthorResponse> {
-      const token = this.SessionStorageService.getToken(); // Retrieve the token from session storage
-      const headers = new HttpHeaders({
-      'Authorization': `${token}` // Add the token to the Authorization header
-    });
-
-        return this.http.post<AuthorResponse>(`${this.apiUrl}/authors/add`,{'name':name},{headers}).pipe(
+        return this.http.post<AuthorResponse>(`${this.apiUrl}/authors/add`,{'name':name}).pipe(
             catchError(this.handleError)
           );
     }

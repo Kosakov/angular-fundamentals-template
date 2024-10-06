@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -6,12 +6,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { v4 as uuidv4 } from 'uuid';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { CoursesStoreService } from '@app/services/courses-store.service';
-import { AuthorResponse } from '@app/services/author.interface';
-import { catchError, map, Observable, of } from 'rxjs';
+import { CoursesStateFacade } from '@app/store/courses/courses.facade';
+
 
 @Component({
   selector: 'app-course-form',
@@ -25,11 +24,12 @@ export class CourseFormComponent {
   invalidDescription: boolean = false;
   invalidDuration: boolean = false;
   invalidAuthorName: boolean = false;
-  authorIdsArr: string[] = []; // Array to hold author IDs
+  authorIdsArr: string[] = []; 
   constructor(
     public fb: FormBuilder,
     public library: FaIconLibrary,
-    private CoursesStoreService: CoursesStoreService
+    private CoursesStoreService: CoursesStoreService,
+    private coursesFacade: CoursesStateFacade
   ) {
     library.addIconPacks(fas);
     this.buildForm();
@@ -67,15 +67,8 @@ export class CourseFormComponent {
         authors: this.authorIdsArr, // Use the array of author IDs
       };
 
-      // Call the service to create the course
-      this.CoursesStoreService.createCourse(course).subscribe({
-        next: (response) => {
-          console.log('Course created successfully:', response);
-        },
-        error: (err) => {
-          console.error('Error creating course:', err);
-        },
-      });
+      this.coursesFacade.createCourse(course)
+
     }
   }
 

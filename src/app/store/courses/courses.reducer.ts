@@ -3,7 +3,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 import * as CoursesActions from './courses.actions';
 
 export interface CoursesState {
-  allCourses: Course[] | null;
+  allCourses: Course[];
   course: Course | null;
   isAllCoursesLoading: boolean;
   isSingleCourseLoading: boolean;
@@ -12,7 +12,7 @@ export interface CoursesState {
 }
 
 export const initialState: CoursesState = {
-  allCourses: null,
+  allCourses: [],
   course: null,
   isAllCoursesLoading: false,
   isSingleCourseLoading: false,
@@ -125,11 +125,11 @@ export const coursesReducer = createReducer(
   })),
 
   // Handling requestDeleteCourseSuccess action
-  on(CoursesActions.requestDeleteCourseSuccess, (state): CoursesState => ({
+  on(CoursesActions.requestDeleteCourseSuccess, (state, { id }): CoursesState => ({
     ...state,
     isSingleCourseLoading: false,
     errorMessage: null,
-    allCourses: state.allCourses ? state.allCourses.filter(course => course.id !== state.course?.id) : null,
+    allCourses: state.allCourses.filter(course => course.id !== id)
   })),
 
   // Handling requestDeleteCourseFail action
@@ -150,7 +150,7 @@ export const coursesReducer = createReducer(
   // Handling requestFilteredCoursesSuccess action
   on(CoursesActions.requestFilteredCoursesSuccess, (state, { courses }): CoursesState => ({
     ...state,
-    allCourses: courses,
+    allCourses: [...courses],
     isAllCoursesLoading: false,
     isSearchState: false,
     errorMessage: null,

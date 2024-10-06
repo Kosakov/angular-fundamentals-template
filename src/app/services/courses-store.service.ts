@@ -67,7 +67,7 @@ export class CoursesStoreService {
             {
                 next:(course)=>{
                     //console.log(course)
-                    this.courseSubject.next(course.result);
+                    this.courseSubject.next(course);
                 },
                 error: (err) => {
                     this.coursesService.handleError(err);
@@ -133,9 +133,9 @@ export class CoursesStoreService {
         )
     }
 
-    filterCourses(values: string[]) {
+    filterCourses(values: string) {
             this.isLoading$$.next(true); // Start loading
-            console.log(values)
+            //console.log(values)
             this.coursesService.filterCourses(values) // Call the service method with the filter value
             .pipe(
                 finalize(() => this.isLoading$$.next(false)) // Stop loading

@@ -1,7 +1,7 @@
 import { Pipe } from "@angular/core";
 //import {mockedAuthorsList} from '@shared/mocks/mock'
 import { CoursesStoreService } from '@app/services/courses-store.service';
-import { map, Observable } from "rxjs";
+import { map, Observable, of } from "rxjs";
 
 
 @Pipe({
@@ -16,16 +16,18 @@ export class AuthorPipe {
 
   }
 
-  transform(ids: string[]): Observable<string[]> {
-  // Transform the IDs into the corresponding names
+  transform(ids: string[] | null | undefined): Observable<string[]> {
+    if (!ids || ids.length === 0) {
+      return of(['Unknown']);  // If `ids` is null, undefined, or empty, return an observable with 'Unknown'
+    }
+  
     return this.authors$.pipe(
       map((authors) =>
         ids.map((id) => {
-
           const author = authors.find((a) => a.id === id);
-          return author ? author.name : 'Unknown';
+          return author.name
         })
       )
     );
-}
+  }
 }

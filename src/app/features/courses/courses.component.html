@@ -4,7 +4,7 @@
 <br/><br/><br/>
 <app-courses-list
 *ngIf="clickedBack"
-[courses]="courses"
+[courses]="coursesFacade.allCourses$ | async"
 [editable]="editable"
 (showCourse)="handleShowCourse($event)"
 (editCourse)="handleEditCourse($event)"

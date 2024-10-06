@@ -8,6 +8,7 @@ import { Observable, of } from 'rxjs';
 import { Course } from '@app/features/courses/interfaces';
 import { CourseResponse } from '@app/services/author.interface';
 import {Router} from '@angular/router'
+import { CoursesStateFacade } from "@app/store/courses/courses.facade";
 
 
 @Injectable()
@@ -15,7 +16,8 @@ export class CoursesEffects {
   constructor(
     private actions$: Actions,
     private coursesService: CoursesService,
-    private router:Router
+    private router:Router,
+    private coursesFacade: CoursesStateFacade
   ) {}
 
   // Get all courses
@@ -33,24 +35,16 @@ export class CoursesEffects {
 
   // Get a single course
   getSpecificCourse$ = createEffect((): Observable<Action> =>
-    this.actions$.pipe(
-      ofType(CoursesActions.requestSingleCourse),
-      mergeMap(({ id }) =>
-        this.coursesService.getCourse(id).pipe(
-          map((courseResponse: CourseResponse) => {
-            const course: Course = {
-              title: courseResponse.result.title,
-              description: courseResponse.result.description,
-              duration: courseResponse.result.duration,
-              authors: courseResponse.result.authors
-            };
-            return CoursesActions.requestSingleCourseSuccess({ course });
-          }),
-          catchError((error) => of(CoursesActions.requestSingleCourseFail({ error })))
-        )
+  this.actions$.pipe(
+    ofType(CoursesActions.requestSingleCourse),
+    mergeMap(({ id }) =>
+      this.coursesService.getCourse(id).pipe(
+        map((course: Course) => CoursesActions.requestSingleCourseSuccess({ course })),
+        catchError((error) => of(CoursesActions.requestSingleCourseFail({ error })))
       )
     )
-  );
+  )
+);
 
   // Create a new course
   createCourse$ = createEffect((): Observable<Action> =>
@@ -88,28 +82,29 @@ export class CoursesEffects {
       ofType(CoursesActions.requestDeleteCourse),
       mergeMap(({ id }) =>
         this.coursesService.deleteCourse(id).pipe(
-          map(() => CoursesActions.requestDeleteCourseSuccess()),
+          map(() => CoursesActions.requestDeleteCourseSuccess({id})),
           catchError((error) => of(CoursesActions.requestDeleteCourseFail({ error })))
         )
       )
     )
   );
 
-  //filteredCourses$ = createEffect((): Observable<Action> =>
-  //this.actions$.pipe(
-  //  ofType(CoursesActions.requestFilteredCourses),
-  //  mergeMap(({ searchValue }) =>
-  //    this.coursesService.filterCourses([searchValue]).pipe(
-  //      map((response: Course) => {
-  //        // Here we expect response to be a single course, not an array
-  //        return CoursesActions.requestFilteredCoursesSuccess({ courses: [response] });
-  //      }),
-  //      catchError((error) => of(CoursesActions.requestFilteredCoursesFail({ error: error.message })))
-  //    )
-  //  )
-  //)
-//);
+  filteredCourses$ = createEffect((): Observable<Action> =>
+  this.actions$.pipe(
+    ofType(CoursesActions.requestFilteredCourses),
+    mergeMap(({ title }) =>
+      this.coursesService.filterCourses(title).pipe(
+        map((response: Course[]) => {
+          // Extract 'courses' from the CourseResponse object
+          console.log(response)
+          return CoursesActions.requestFilteredCoursesSuccess({ courses: response });
+        }),
+        catchError((error) => of(CoursesActions.requestFilteredCoursesFail({ error: error.message })))
+      )
+    )
+  )
 
+);
 redirectToTheCoursesPage$ = createEffect(() =>
   this.actions$.pipe(
     ofType(CoursesActions.requestCreateCourseSuccess, CoursesActions.requestEditCourseSuccess),

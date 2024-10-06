@@ -12,8 +12,12 @@ import { CoursesComponent } from './features/courses/courses.component';
 import { CoursesListComponent } from './features/courses/courses-list/courses-list.component';
 import { RouterModule } from '@angular/router';
 import { routes } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SessionStorageService } from './auth/services/session-storage.service';
+import { StoreModule } from '@ngrx/store';
+import { effects, reducers } from './store';
+import { EffectsModule } from '@ngrx/effects';
+import { TokenInterceptor } from './auth/interceptors/token.interceptor';
 
 
 @NgModule({
@@ -23,9 +27,14 @@ import { SessionStorageService } from './auth/services/session-storage.service';
     SharedModule,
     FontAwesomeModule,
     RouterModule.forRoot(routes),
-    HttpClientModule
-  ],
-  providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService,SessionStorageService,Window],
+    HttpClientModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot(effects)],
+  providers: [AuthorizedGuard, NotAuthorizedGuard, CoursesService, CoursesStoreService,SessionStorageService,Window,{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor, 
+    multi: true
+  }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

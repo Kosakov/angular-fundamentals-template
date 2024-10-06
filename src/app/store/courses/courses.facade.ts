@@ -1,5 +1,4 @@
 // src/app/store/courses/courses.facade.ts
-
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import * as CoursesActions from './courses.actions';
@@ -21,9 +20,10 @@ export class CoursesStateFacade {
   isAllCoursesLoading$: Observable<boolean> = this.store.pipe(select(isAllCoursesLoadingSelector));
   isSingleCourseLoading$: Observable<boolean> = this.store.pipe(select(isSingleCourseLoadingSelector));
   isSearchingState$: Observable<boolean> = this.store.pipe(select(isSearchingStateSelector));
-  allCourses$: Observable<Course[] | null> = this.store.pipe(select(getAllCourses));
+  allCourses$: Observable<Course[]> = this.store.pipe(select(getAllCourses));
   course$: Observable<Course | null> = this.store.pipe(select(getCourse));
   errorMessage$: Observable<string | null> = this.store.pipe(select(getErrorMessage));
+
 
   constructor(private store: Store) {}
 
@@ -49,5 +49,6 @@ export class CoursesStateFacade {
 
   deleteCourse(id: string): void {
     this.store.dispatch(CoursesActions.requestDeleteCourse({ id }));
+    
   }
 }

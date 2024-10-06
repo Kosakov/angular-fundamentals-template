@@ -1,15 +1,15 @@
 <!-- Replace ::text:: with your code -->
 <ng-container *ngIf="currentCourse">
-<div class="title">{{currentCourse!.title}}</div>
+<div class="title">{{currentCourse.title}}</div>
 <div class="course-info">
   <div class="course-info__description">
-    {{currentCourse!.description}}
+    {{currentCourse.description}}
   </div>
   <div class="course-info__info">
-    <div><b>ID: </b><span class="course-info__info-id">{{currentCourse!.id}}</span></div>
-    <div><b>Duration: </b><span class="course-info__info-duration">{{currentCourse!.duration|duration}}</span></div>
-    <div><b>Created: </b><span class="course-info__info-date">{{currentCourse!.creationDate}}</span></div>
-    <div><b>Authors: </b><span class="course-info__info-authors">{{currentCourse!.authors|author|async}}</span></div>
+    <div><b>ID: </b><span class="course-info__info-id">{{currentCourse.id}}</span></div>
+    <div><b>Duration: </b><span class="course-info__info-duration">{{currentCourse.duration|duration}}</span></div>
+    <div><b>Created: </b><span class="course-info__info-date">{{currentCourse.creationDate|customDate}}</span></div>
+    <div><b>Authors: </b><span class="course-info__info-authors">{{currentCourse.authors|author|async}}</span></div>
   </div>
 </div>
 <div class="navigation-block">

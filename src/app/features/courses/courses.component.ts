@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import {  Component, OnInit } from "@angular/core";
 import { Course } from "@app/features/courses/interfaces";
 import { CoursesStoreService } from "@app/services/courses-store.service";
 import { ActivatedRoute, Router } from "@angular/router";
-import { CoursesService } from "@app/services/courses.service";
+import { CoursesStateFacade } from "@app/store/courses/courses.facade";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-courses",
@@ -14,27 +15,21 @@ export class CoursesComponent implements OnInit {
     private CoursesStoreService: CoursesStoreService,
     private router: Router,
     private route: ActivatedRoute,
-    private coursesService:CoursesService
+    public  coursesFacade: CoursesStateFacade,
   ) {}
   courses: Course[] = [];
   clickedBack: boolean = true;
   searched: any;
-
   editable = true;
+  courses$!: Observable<Course[]>;
   ngOnInit() {
+    this.courses$ = this.coursesFacade.allCourses$;
+
+    
     this.route.queryParams.subscribe((params) => {
       let title = params["title"];
       if (title) {
-        this.CoursesStoreService.filterCourses(title.split(","))
-        this.CoursesStoreService.courses$.subscribe((filteredCourses) => {
-          //console.log(filteredCourses);
-          if (filteredCourses && filteredCourses.length>0){
-            this.courses=filteredCourses; // Handle filtered courses
-          }
-          else{
-            this.router.navigate(['/courses']);
-          }
-        });
+        this.coursesFacade.getFilteredCourses(title)
       } else {
         this.loadAllCourses();
       }
@@ -42,12 +37,7 @@ export class CoursesComponent implements OnInit {
   }
 
   loadAllCourses() {
-    this.CoursesStoreService.getAllAuthors();
-    this.CoursesStoreService.getAll();
-    this.CoursesStoreService.courses$.subscribe((course)=>{
-      this.courses=course
-    })
-    
+    this.coursesFacade.getAllCourses();
   }
 
   handleShowCourse(course: Course) {
@@ -62,7 +52,10 @@ export class CoursesComponent implements OnInit {
   }
 
   handleDeleteCourse(course: Course) {
-    //console.log('Delete course:', course);
+    if (course.id){
+      this.coursesFacade.deleteCourse(course.id)
+      this.courses = this.courses.filter((courseHave) => courseHave.id !== course.id);
+    }
   }
 
   handleBack(): void {
